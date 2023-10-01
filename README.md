@@ -1,6 +1,6 @@
 # Тестовое задание
 
-[Здесь](https://docs.google.com/document/d/1LAwQSw7fwaOjXFvbJWr-YsIeyKffGxU506W7a3i6AaE/edit?pli=1)
+[Здесь](https://github.com/Nikolay-Twin/test_work_laravel/blob/main/task.pdf)
 
 Требовалось установить **последнюю версию** Laravel (9.х), но последняя уже 10. Поставил девятую, как требовалось.
 
