@@ -1,0 +1,270 @@
+{
+	"info": {
+		"_postman_id": "51e1eb81-c867-4db3-a5dd-91d07bd50347",
+		"name": "test28",
+		"description": "Тестовое задание",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27360116",
+		"_collection_link": "https://gold-equinox-136263.postman.co/workspace/8d405ea2-b99b-4268-8da0-5d882a2b64a4/collection/27360116-51e1eb81-c867-4db3-a5dd-91d07bd50347?action=share&source=collection_link&creator=27360116"
+	},
+	"item": [
+		{
+			"name": "mark",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://test28.local/api/v1/mark",
+					"protocol": "http",
+					"host": [
+						"test28",
+						"local"
+					],
+					"path": [
+						"api",
+						"v1",
+						"mark"
+					]
+				},
+				"description": "Получает список всх марок автомобилей"
+			},
+			"response": []
+		},
+		{
+			"name": "model",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://test28.local/api/v1/model/954b60a4-13ee-4fb6-9e4a-044bd251fe88",
+					"protocol": "http",
+					"host": [
+						"test28",
+						"local"
+					],
+					"path": [
+						"api",
+						"v1",
+						"model",
+						"954b60a4-13ee-4fb6-9e4a-044bd251fe88"
+					]
+				},
+				"description": "Получает список моделей автомобилей выбранной марки"
+			},
+			"response": []
+		},
+		{
+			"name": "all models",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://test28.local/api/v1/model",
+					"protocol": "http",
+					"host": [
+						"test28",
+						"local"
+					],
+					"path": [
+						"api",
+						"v1",
+						"model"
+					]
+				},
+				"description": "Получает список всех моделей авто, установленных в базе"
+			},
+			"response": []
+		},
+		{
+			"name": "car",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://test28.local/api/v1/car/784a603d-25fc-b64f-4a9e-28ce5331ac12",
+					"protocol": "http",
+					"host": [
+						"test28",
+						"local"
+					],
+					"path": [
+						"api",
+						"v1",
+						"car",
+						"784a603d-25fc-b64f-4a9e-28ce5331ac12"
+					]
+				},
+				"description": "Получает автомобиль по идентификатору"
+			},
+			"response": []
+		},
+		{
+			"name": "all cars",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://test28.local/api/v1/car",
+					"protocol": "http",
+					"host": [
+						"test28",
+						"local"
+					],
+					"path": [
+						"api",
+						"v1",
+						"car"
+					]
+				},
+				"description": "Получает список всех автомобилей"
+			},
+			"response": []
+		},
+		{
+			"name": "car create",
+			"protocolProfileBehavior": {
+				"disabledSystemHeaders": {
+					"content-type": true
+				}
+			},
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\":\"Ласточка\",\n    \"model_id\":\"6d6eb849-bf93-4468-9d85-d5ca79b91648\",\n    \"year\":\"2011\",\n    \"mileage\":\"100000\",\n    \"color\":\"серо-буро-малиновый\"\n}"
+				},
+				"url": {
+					"raw": "http://test28.local/api/v1/car",
+					"protocol": "http",
+					"host": [
+						"test28",
+						"local"
+					],
+					"path": [
+						"api",
+						"v1",
+						"car"
+					]
+				},
+				"description": "Генерирует новую запись для автомобиля"
+			},
+			"response": []
+		},
+		{
+			"name": "car update",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"car_id\":\"5419db1e-657a-4847-c23f-a154321b0a27\",\n    \"year\":\"2010\",\n    \"mileage\":\"1000\"\n}"
+				},
+				"url": {
+					"raw": "http://test28.local/api/v1/car",
+					"protocol": "http",
+					"host": [
+						"test28",
+						"local"
+					],
+					"path": [
+						"api",
+						"v1",
+						"car"
+					]
+				},
+				"description": "Редактирование выбранного авто"
+			},
+			"response": []
+		},
+		{
+			"name": "car delete",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "X-Requested-With",
+						"value": "XMLHttpRequest",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"delete\":[\"5419db1e-657a-4847-c23f-a154321b0a27\", \"00000000-0000-0000-0000-000000000000\"]\n}"
+				},
+				"url": {
+					"raw": "http://test28.local/api/v1/car",
+					"protocol": "http",
+					"host": [
+						"test28",
+						"local"
+					],
+					"path": [
+						"api",
+						"v1",
+						"car"
+					]
+				},
+				"description": "Удаление одного или нескольких автомобилей"
+			},
+			"response": []
+		}
+	]
+}

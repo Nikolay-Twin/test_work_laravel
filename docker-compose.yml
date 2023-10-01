@@ -1,0 +1,141 @@
+version: "3.9"
+
+services:
+
+  nginx:
+    build:
+      context: ./docker/nginx
+    container_name: "${APP_ENV}_${CONTAINER_NAME}_nginx"
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - "./docker/nginx/conf/nginx_${APP_ENV}.conf:/etc/nginx/conf.d/x_nginx.conf"
+      - ./docker/nginx/ssl:/etc/nginx/ssl
+      - ./docker/runtime/nginx:/var/log/nginx
+      - ./backend:/var/www
+    depends_on:
+      - php
+    entrypoint: ["nginx-debug", "-g", "daemon off;"]
+    networks:
+      - test28
+
+  php:
+    build:
+      context: ./docker/php
+      args:
+        - WITH_XDEBUG=true
+        - APP_ENV=${APP_ENV}
+    container_name: "${APP_ENV}_${CONTAINER_NAME}_php"
+    restart: always
+    environment:
+      XDEBUG_CONFIG: "remote_host=192.168.220.1 remote_enable=1"
+      PHP_IDE_CONFIG: "serverName=Docker"
+      PHP_ENABLE_XDEBUG: 1
+    depends_on:
+      - postgresql
+      - postgresql_test
+    volumes:
+      - ./backend:/var/www
+      - "${PHP_INI_DIR}/php.ini:/usr/local/etc/php/conf.d/xx-custom.ini"
+    ports:
+      - "8080:8080"
+    networks:
+      - test28
+
+  postgresql:
+    hostname: ${DB_HOST}
+    container_name: "${APP_ENV}_${CONTAINER_NAME}_postgres"
+    restart: unless-stopped
+    build:
+      context: docker/postgres
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: ${DB_DATABASE}
+      PGDATA: "/var/lib/postgres/data/pgdata"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 4G
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - pgdata:/var/lib/postgre/data
+    networks:
+      - test28
+
+  postgresql_test:
+    hostname: "${DB_HOST}_test"
+    container_name: "${APP_ENV}_${CONTAINER_NAME}_postgres_test"
+    restart: unless-stopped
+    build:
+      context: docker/postgres
+      dockerfile: Dockerfile
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_DB: "${DB_DATABASE}_test"
+      PGDATA: "/var/lib/postgres/data/pgdata"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}_test"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 4G
+    ports:
+      - "${DB_PORT}1:5432"
+    volumes:
+      - pgdata_test:/var/lib/postgre/data
+    networks:
+      - test28
+
+  pgadmin:
+    hostname: ${PGADMIN_HOST}
+    container_name: "${APP_ENV}_${CONTAINER_NAME}_pgadmin"
+    restart: always
+    build:
+      context: docker/pgadmin
+      dockerfile: Dockerfile
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+      - PGADMIN_CONFIG_SERVER_MODE=True
+    ports:
+      - "${PGADMIN_PORT}:80"
+    depends_on:
+      - postgresql
+      - postgresql_test
+    volumes:
+      - pgadmin:/var/lib/pgadmin/data
+    networks:
+      - test28
+
+volumes:
+  src:
+    driver: local
+  pgdata:
+    driver: local
+  pgdata_test:
+    driver: local
+  pgadmin:
+    driver: local
+
+
+networks:
+  test28:
+    driver: bridge
+
